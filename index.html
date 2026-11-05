@@ -1,9 +1,9 @@
 <!doctype html>
-<html lang="en">
+<html lang="de">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Future Day — Co-op Tennis</title>
+    <title>Future Day — Koop-Tennis</title>
     <link rel="stylesheet" href="src/styles.css" />
   </head>
   <body>
@@ -14,40 +14,40 @@
         </div>
         <canvas id="game" width="900" height="635"></canvas>
         <div class="controls-hint">
-          <span><b>P1</b>: A / D move</span>
-          <span><b>P2</b>: ← / → move</span>
+          <span><b>P1</b>: A / D bewegen</span>
+          <span><b>P2</b>: ← / → bewegen</span>
         </div>
       </div>
 
       <aside class="highscores">
-        <h2>🏆 Highscores</h2>
+        <h2>🏆 Bestenliste</h2>
         <ol id="highscore-list"></ol>
       </aside>
     </div>
 
-    <!-- Start / name modal -->
+    <!-- Start- / Namens-Dialog -->
     <div class="modal-backdrop" id="start-modal">
       <div class="modal">
-        <h1>Co-op Tennis</h1>
-        <p>Enter the player names to start:</p>
+        <h1>Koop-Tennis</h1>
+        <p>Gib die Spielernamen ein, um zu starten:</p>
         <label>
-          Player 1 name
+          Name Spieler 1
           <input type="text" id="name1" maxlength="12" value="P1" />
         </label>
         <label>
-          Player 2 name
+          Name Spieler 2
           <input type="text" id="name2" maxlength="12" value="P2" />
         </label>
-        <button id="start-btn">Start Game</button>
+        <button id="start-btn">Spiel starten</button>
       </div>
     </div>
 
-    <!-- Game over modal -->
+    <!-- Spielende-Dialog -->
     <div class="modal-backdrop hidden" id="gameover-modal">
       <div class="modal">
-        <h1>Ball dropped!</h1>
-        <p>Your team scored <span id="final-score">0</span> hits.</p>
-        <button id="restart-btn">Play Again</button>
+        <h1>Ball verloren!</h1>
+        <p>Euer Team hat <span id="final-score">0</span> Treffer erzielt.</p>
+        <button id="restart-btn">Nochmal spielen</button>
       </div>
     </div>
 

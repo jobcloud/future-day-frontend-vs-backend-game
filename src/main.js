@@ -197,7 +197,7 @@ function step() {
 
   scoreEl.textContent = state.score;
   draw(ctx, state);
-  if (remainingMs > -500) drawCountdownOverlay("GO!");
+  if (remainingMs > -500) drawCountdownOverlay("LOS!");
   clearJustPressed();
 }
 
