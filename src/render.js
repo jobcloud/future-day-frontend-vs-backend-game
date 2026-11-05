@@ -3,33 +3,30 @@
 const BILD_ENDUNGEN = ["png", "jpeg", "jpg", "webp", "gif"];
 
 let player1Sprite = null;
-let player1SpriteReady = false;
 let player1SpriteDone = false;
 
 let player2Sprite = null;
-let player2SpriteReady = false;
 let player2SpriteDone = false;
 
 let hintergrundBildDone = false;
 
 const spriteReadyCallbacks = [];
 
-function ladeErstesBild(stammname, endungen, beiErfolg, beiFertig) {
+function ladeErstesBild(stammname, beimFertig) {
   let index = 0;
 
   function versucheNaechstes() {
-    if (index >= endungen.length) {
-      beiFertig(null, null);
+    if (index >= BILD_ENDUNGEN.length) {
+      beimFertig(null, null);
       return;
     }
 
-    const endung = endungen[index++];
+    const endung = BILD_ENDUNGEN[index++];
     const dateiName = `${stammname}.${endung}`;
     const bild = new Image();
 
     bild.onload = () => {
-      beiErfolg(bild, dateiName);
-      beiFertig(bild, dateiName);
+      beimFertig(bild, dateiName);
     };
 
     bild.onerror = () => {
@@ -54,7 +51,7 @@ function flushSpriteReadyCallbacks() {
   }
 }
 
-function wennSpielerSpritesBereit(callback) {
+function wennBilderFertig(callback) {
   if (alleBilderFertig()) {
     callback();
     return;
@@ -73,52 +70,32 @@ function drawRoundedRectPath(ctx, x, y, width, height, radius) {
   ctx.closePath();
 }
 
-ladeErstesBild(
-  "player1",
-  BILD_ENDUNGEN,
-  (bild) => {
-    player1Sprite = bild;
-    player1SpriteReady = true;
-  },
-  () => {
-    player1SpriteDone = true;
-    flushSpriteReadyCallbacks();
-  },
-);
+ladeErstesBild("player1", (bild) => {
+  player1Sprite = bild;
+  player1SpriteDone = true;
+  flushSpriteReadyCallbacks();
+});
 
-ladeErstesBild(
-  "player2",
-  BILD_ENDUNGEN,
-  (bild) => {
-    player2Sprite = bild;
-    player2SpriteReady = true;
-  },
-  () => {
-    player2SpriteDone = true;
-    flushSpriteReadyCallbacks();
-  },
-);
+ladeErstesBild("player2", (bild) => {
+  player2Sprite = bild;
+  player2SpriteDone = true;
+  flushSpriteReadyCallbacks();
+});
 
-ladeErstesBild(
-  "hintergrund",
-  BILD_ENDUNGEN,
-  (_, dateiName) => {
-    const canvasElement = document.getElementById("game");
-    if (canvasElement) {
-      canvasElement.style.backgroundImage = `url("${dateiName}")`;
-      canvasElement.style.backgroundPosition = "center center";
-      canvasElement.style.backgroundRepeat = "no-repeat";
-      canvasElement.style.backgroundSize = "contain";
-    }
-  },
-  () => {
-    hintergrundBildDone = true;
-    flushSpriteReadyCallbacks();
-  },
-);
+ladeErstesBild("hintergrund", (bild, dateiName) => {
+  const canvasElement = document.getElementById("game");
+  if (bild && canvasElement) {
+    canvasElement.style.backgroundImage = `url("${dateiName}")`;
+    canvasElement.style.backgroundPosition = "center center";
+    canvasElement.style.backgroundRepeat = "no-repeat";
+    canvasElement.style.backgroundSize = "contain";
+  }
+  hintergrundBildDone = true;
+  flushSpriteReadyCallbacks();
+});
 
 function draw(ctx, state) {
-  const { width, height, groundY, netX, netHeight, players, ball } = state;
+  const { width, height, players, ball } = state;
 
   ctx.clearRect(0, 0, width, height);
 
@@ -127,9 +104,9 @@ function draw(ctx, state) {
     const shouldUsePlayer1Sprite = p.seite === "links";
     const shouldUsePlayer2Sprite = p.seite === "rechts";
 
-    if (shouldUsePlayer1Sprite && player1SpriteReady) {
+    if (shouldUsePlayer1Sprite && player1Sprite) {
       ctx.drawImage(player1Sprite, p.x, p.y, p.width, p.height);
-    } else if (shouldUsePlayer2Sprite && player2SpriteReady) {
+    } else if (shouldUsePlayer2Sprite && player2Sprite) {
       ctx.save();
       ctx.translate(p.x + p.width, p.y);
       ctx.scale(-1, 1);

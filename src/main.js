@@ -20,13 +20,12 @@ const HEIGHT = canvas.height;
 const GROUND_Y = 480;
 const NET_X = WIDTH / 2;
 const NET_HEIGHT = 90;
-const PLAYER_W = 70;
-const PLAYER_H = 60;
-const PLAYER_Y = GROUND_Y - PLAYER_H;
-const PLAYER1_SCALE = 2;
-const PLAYER1_W = PLAYER_W * PLAYER1_SCALE;
-const PLAYER1_H = PLAYER_H * PLAYER1_SCALE;
-const PLAYER1_Y = GROUND_Y - PLAYER1_H;
+const PLAYER_BASE_WIDTH = 70;
+const PLAYER_BASE_HEIGHT = 60;
+const PLAYER_SCALE = 2;
+const PLAYER_WIDTH = PLAYER_BASE_WIDTH * PLAYER_SCALE;
+const PLAYER_HEIGHT = PLAYER_BASE_HEIGHT * PLAYER_SCALE;
+const PLAYER_Y = GROUND_Y - PLAYER_HEIGHT;
 const BALL_RADIUS = 14;
 
 // --- State ---
@@ -48,18 +47,18 @@ function createState(name1, name2) {
         seite: "links",
         name: name1,
         x: 150,
-        y: PLAYER1_Y,
-        width: PLAYER1_W,
-        height: PLAYER1_H,
+        y: PLAYER_Y,
+        width: PLAYER_WIDTH,
+        height: PLAYER_HEIGHT,
         color: "#e07a3a",
       },
       {
         seite: "rechts",
         name: name2,
-        x: WIDTH - 220 - PLAYER1_W,
-        y: PLAYER1_Y,
-        width: PLAYER1_W,
-        height: PLAYER1_H,
+        x: WIDTH - 220 - PLAYER_WIDTH,
+        y: PLAYER_Y,
+        width: PLAYER_WIDTH,
+        height: PLAYER_HEIGHT,
         color: "#f0f0f0",
       },
     ],
@@ -156,7 +155,6 @@ function step() {
     draw(ctx, state);
     const secondsLeft = Math.ceil(remainingMs / 1000);
     drawCountdownOverlay(String(secondsLeft));
-    clearJustPressed();
     return;
   }
 
@@ -198,7 +196,6 @@ function step() {
   scoreEl.textContent = state.score;
   draw(ctx, state);
   if (remainingMs > -500) drawCountdownOverlay("LOS!");
-  clearJustPressed();
 }
 
 function loop() {
@@ -208,7 +205,7 @@ function loop() {
 }
 
 function startGame(name1, name2) {
-  wennSpielerSpritesBereit(() => {
+  wennBilderFertig(() => {
     state = createState(name1 || "P1", name2 || "P2");
     state.countdownEndsAt = performance.now() + 3000;
     state.initialBallVx = state.ball.vx;
@@ -236,35 +233,8 @@ function endGame() {
 
 highscoreLaden();
 renderHighscores(highscoreListEl);
-wennSpielerSpritesBereit(() => {
-  draw(ctx, {
-    width: WIDTH,
-    height: HEIGHT,
-    groundY: GROUND_Y,
-    netX: NET_X,
-    netHeight: NET_HEIGHT,
-    players: [
-      {
-        seite: "links",
-        name: "P1",
-        x: 150,
-        y: PLAYER1_Y,
-        width: PLAYER1_W,
-        height: PLAYER1_H,
-        color: "#e07a3a",
-      },
-      {
-        seite: "rechts",
-        name: "P2",
-        x: WIDTH - 220 - PLAYER1_W,
-        y: PLAYER1_Y,
-        width: PLAYER1_W,
-        height: PLAYER1_H,
-        color: "#f0f0f0",
-      },
-    ],
-    ball: { x: WIDTH / 2, y: 120, radius: BALL_RADIUS },
-  });
+wennBilderFertig(() => {
+  draw(ctx, createState("P1", "P2"));
 });
 
 startBtn.addEventListener("click", () => {
