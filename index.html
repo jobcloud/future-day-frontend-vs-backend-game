@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Future Day — Co-op Tennis</title>
+    <link rel="stylesheet" href="src/styles.css" />
+  </head>
+  <body>
+    <div class="app">
+      <div class="game-area">
+        <div class="hud">
+          <div class="score" id="score">0</div>
+        </div>
+        <canvas id="game" width="900" height="635"></canvas>
+        <div class="controls-hint">
+          <span><b>P1</b>: A / D move</span>
+          <span><b>P2</b>: ← / → move</span>
+        </div>
+      </div>
+
+      <aside class="highscores">
+        <h2>🏆 Highscores</h2>
+        <ol id="highscore-list"></ol>
+      </aside>
+    </div>
+
+    <!-- Start / name modal -->
+    <div class="modal-backdrop" id="start-modal">
+      <div class="modal">
+        <h1>Co-op Tennis</h1>
+        <p>Enter the player names to start:</p>
+        <label>
+          Player 1 name
+          <input type="text" id="name1" maxlength="12" value="P1" />
+        </label>
+        <label>
+          Player 2 name
+          <input type="text" id="name2" maxlength="12" value="P2" />
+        </label>
+        <button id="start-btn">Start Game</button>
+      </div>
+    </div>
+
+    <!-- Game over modal -->
+    <div class="modal-backdrop hidden" id="gameover-modal">
+      <div class="modal">
+        <h1>Ball dropped!</h1>
+        <p>Your team scored <span id="final-score">0</span> hits.</p>
+        <button id="restart-btn">Play Again</button>
+      </div>
+    </div>
+
+    <script src="gameplay.js"></script>
+    <script src="src/input.js"></script>
+    <script src="src/render.js"></script>
+    <script src="src/highscore.js"></script>
+    <script src="src/main.js"></script>
+  </body>
+</html>
