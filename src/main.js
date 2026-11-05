@@ -224,7 +224,7 @@ function startGame(name1, name2) {
 
 function endGame() {
   running = false;
-  addHighscore(state.names[0], state.names[1], state.score);
+  highscoreHinzufuegen(state.names[0], state.names[1], state.score);
   renderHighscores(highscoreListEl);
   finalScoreEl.textContent = state.score;
   gameoverModal.classList.remove("hidden");
@@ -232,6 +232,7 @@ function endGame() {
 
 // --- Wire up UI ---
 
+highscoreLaden();
 renderHighscores(highscoreListEl);
 draw(ctx, {
   width: WIDTH,

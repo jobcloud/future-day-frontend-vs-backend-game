@@ -69,3 +69,28 @@ function begrenzeBallTempo(ball) {
   if (ball.vy > MAX_BALL_TEMPO) ball.vy = MAX_BALL_TEMPO;
   if (ball.vy < -MAX_BALL_TEMPO) ball.vy = -MAX_BALL_TEMPO;
 }
+
+// --- Highscore-Funktionen --------------------------------------
+
+// Lade die Highscores vom Startzustand oder dem Backend.
+function highscoreLaden() {
+  const startHighscores = [
+    { namen: "P1 & P2", punkte: 55 },
+    { namen: "Alice & Bob", punkte: 9 },
+    { namen: "Frontend & Backend", punkte: 7 },
+  ];
+
+  // Spaeter moeglich mit Backend, absichtlich nur als Kommentar:
+  // const antwort = await fetch("/api/highscores");
+  // const daten = await antwort.json();
+
+  return highscoreLadenIntern(startHighscores);
+}
+
+// Füge einen neuen Highscore hinzu.
+function highscoreHinzufuegen(spieler1Name, spieler2Name, punkte) {
+  // Spaeter moeglich mit Backend, absichtlich nur als Kommentar:
+  // await fetch("/api/highscores", { method: "POST", ... });
+
+  return highscoreHinzufuegenIntern(spieler1Name, spieler2Name, punkte);
+}
