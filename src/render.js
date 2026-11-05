@@ -62,6 +62,17 @@ function wennSpielerSpritesBereit(callback) {
   spriteReadyCallbacks.push(callback);
 }
 
+function drawRoundedRectPath(ctx, x, y, width, height, radius) {
+  const r = Math.min(radius, width / 2, height / 2);
+  ctx.beginPath();
+  ctx.moveTo(x + r, y);
+  ctx.arcTo(x + width, y, x + width, y + height, r);
+  ctx.arcTo(x + width, y + height, x, y + height, r);
+  ctx.arcTo(x, y + height, x, y, r);
+  ctx.arcTo(x, y, x + width, y, r);
+  ctx.closePath();
+}
+
 ladeErstesBild(
   "player1",
   BILD_ENDUNGEN,
@@ -144,10 +155,28 @@ function draw(ctx, state) {
   ctx.stroke();
 
   // Player name labels
-  ctx.fillStyle = "#0e1626";
   ctx.font = "bold 14px system-ui, sans-serif";
-  ctx.textAlign = "center";
+  ctx.textAlign = "left";
+  ctx.textBaseline = "middle";
   for (const p of players) {
-    ctx.fillText(p.name, p.x + p.width / 2, p.y - 8);
+    const labelText = p.name;
+    const textWidth = ctx.measureText(labelText).width;
+    const padX = 10;
+    const pillHeight = 26;
+    const pillWidth = textWidth + padX * 2;
+    const pillX = p.x + p.width / 2 - pillWidth / 2;
+    const pillY = p.y - pillHeight - 10;
+
+    ctx.fillStyle =
+      p.seite === "links" ? "rgba(224,122,58,0.92)" : "rgba(41,98,255,0.92)";
+    drawRoundedRectPath(ctx, pillX, pillY, pillWidth, pillHeight, 13);
+    ctx.fill();
+
+    ctx.strokeStyle = "rgba(255,255,255,0.35)";
+    ctx.lineWidth = 1;
+    ctx.stroke();
+
+    ctx.fillStyle = "#ffffff";
+    ctx.fillText(labelText, pillX + padX, pillY + pillHeight / 2);
   }
 }
