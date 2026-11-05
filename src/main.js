@@ -208,18 +208,20 @@ function loop() {
 }
 
 function startGame(name1, name2) {
-  state = createState(name1 || "P1", name2 || "P2");
-  state.countdownEndsAt = performance.now() + 3000;
-  state.initialBallVx = state.ball.vx;
-  state.ball.vx = 0;
-  state.ball.vy = 0;
-  hitCooldown = 30;
-  scoreEl.textContent = "0";
-  startModal.classList.add("hidden");
-  gameoverModal.classList.add("hidden");
-  draw(ctx, state);
-  running = true;
-  requestAnimationFrame(loop);
+  wennSpielerSpritesBereit(() => {
+    state = createState(name1 || "P1", name2 || "P2");
+    state.countdownEndsAt = performance.now() + 3000;
+    state.initialBallVx = state.ball.vx;
+    state.ball.vx = 0;
+    state.ball.vy = 0;
+    hitCooldown = 30;
+    scoreEl.textContent = "0";
+    startModal.classList.add("hidden");
+    gameoverModal.classList.add("hidden");
+    draw(ctx, state);
+    running = true;
+    requestAnimationFrame(loop);
+  });
 }
 
 function endGame() {
@@ -234,33 +236,35 @@ function endGame() {
 
 highscoreLaden();
 renderHighscores(highscoreListEl);
-draw(ctx, {
-  width: WIDTH,
-  height: HEIGHT,
-  groundY: GROUND_Y,
-  netX: NET_X,
-  netHeight: NET_HEIGHT,
-  players: [
-    {
-      seite: "links",
-      name: "P1",
-      x: 150,
-      y: PLAYER1_Y,
-      width: PLAYER1_W,
-      height: PLAYER1_H,
-      color: "#e07a3a",
-    },
-    {
-      seite: "rechts",
-      name: "P2",
-      x: WIDTH - 220 - PLAYER1_W,
-      y: PLAYER1_Y,
-      width: PLAYER1_W,
-      height: PLAYER1_H,
-      color: "#f0f0f0",
-    },
-  ],
-  ball: { x: WIDTH / 2, y: 120, radius: BALL_RADIUS },
+wennSpielerSpritesBereit(() => {
+  draw(ctx, {
+    width: WIDTH,
+    height: HEIGHT,
+    groundY: GROUND_Y,
+    netX: NET_X,
+    netHeight: NET_HEIGHT,
+    players: [
+      {
+        seite: "links",
+        name: "P1",
+        x: 150,
+        y: PLAYER1_Y,
+        width: PLAYER1_W,
+        height: PLAYER1_H,
+        color: "#e07a3a",
+      },
+      {
+        seite: "rechts",
+        name: "P2",
+        x: WIDTH - 220 - PLAYER1_W,
+        y: PLAYER1_Y,
+        width: PLAYER1_W,
+        height: PLAYER1_H,
+        color: "#f0f0f0",
+      },
+    ],
+    ball: { x: WIDTH / 2, y: 120, radius: BALL_RADIUS },
+  });
 });
 
 startBtn.addEventListener("click", () => {

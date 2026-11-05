@@ -27,11 +27,6 @@ const SCHLAG_ZUFALL = 0.2;
 
 // --- Kleine Spielfunktionen --------------------------------------
 
-// Wähle einen zufälligen Faktor nahe bei 1, z. B. 0.9 - 1.1 bei menge = 0.1.
-function zufallsFaktor(menge) {
-  return 1 + (Math.random() * 2 - 1) * menge;
-}
-
 // Bewege einen Spieler. richtung ist -1 (links) oder +1 (rechts).
 function bewegeSpieler(spieler, richtung) {
   spieler.x += richtung * SPIELER_TEMPO;
@@ -68,6 +63,11 @@ function begrenzeBallTempo(ball) {
   if (ball.vx < -MAX_BALL_TEMPO) ball.vx = -MAX_BALL_TEMPO;
   if (ball.vy > MAX_BALL_TEMPO) ball.vy = MAX_BALL_TEMPO;
   if (ball.vy < -MAX_BALL_TEMPO) ball.vy = -MAX_BALL_TEMPO;
+}
+
+// Wähle einen zufälligen Faktor nahe bei 1, z. B. 0.9 - 1.1 bei menge = 0.1.
+function zufallsFaktor(menge) {
+  return 1 + (Math.random() * 2 - 1) * menge;
 }
 
 // --- Highscore-Funktionen --------------------------------------

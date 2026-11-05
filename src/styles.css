@@ -57,7 +57,7 @@ body {
 }
 
 canvas {
-  background: url("../hintergrund.png") center center / cover no-repeat;
+  background: #5f8dc0;
   border-radius: 12px;
   box-shadow: 0 6px 24px rgba(0, 0, 0, 0.4);
   image-rendering: pixelated;
