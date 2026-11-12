@@ -72,25 +72,21 @@ function zufallsFaktor(menge) {
 
 // --- Highscore-Funktionen --------------------------------------
 
-// Lade die Highscores vom Startzustand oder dem Backend.
-function highscoreLaden() {
-  const startHighscores = [
-    { namen: "P1 & P2", punkte: 55 },
-    { namen: "Alice & Bob", punkte: 9 },
-    { namen: "Frontend & Backend", punkte: 7 },
-  ];
-
-  // Spaeter moeglich mit Backend, absichtlich nur als Kommentar:
-  // const antwort = await fetch("/api/highscores");
-  // const daten = await antwort.json();
-
-  return highscoreLadenIntern(startHighscores);
+async function highscoreLaden() {
+  const eintraege = await highscoreVomServerLaden();
+  return eintraege === null
+    ? interneHighscores
+    : highscoreLadenIntern(eintraege);
 }
 
 // Füge einen neuen Highscore hinzu.
-function highscoreHinzufuegen(spieler1Name, spieler2Name, punkte) {
-  // Spaeter moeglich mit Backend, absichtlich nur als Kommentar:
-  // await fetch("/api/highscores", { method: "POST", ... });
-
-  return highscoreHinzufuegenIntern(spieler1Name, spieler2Name, punkte);
+async function highscoreHinzufuegen(spieler1Name, spieler2Name, punkte) {
+  highscoreHinzufuegenIntern(spieler1Name, spieler2Name, punkte);
+  const gruppenId = gruppenIdAusNamenErstellen(spieler1Name, spieler2Name);
+  const gespeichert = await highscoreAnServerSenden(
+    gruppenId,
+    `${spieler1Name} & ${spieler2Name}`,
+    punkte,
+  );
+  return gespeichert ? highscoreLaden() : interneHighscores;
 }
